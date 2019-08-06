@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">movieDemo</string>
+    <string name="photo">TEST</string>
+    <string name="movieTitle">Title</string>
+    <string name="movieGenre">Genre</string>
+    <string name="movieYear">Year</string>
+</resources>
