@@ -1,8 +1,8 @@
 package com.android.freelance.moviedemo.data.network.response
 
-import com.android.freelance.moviedemo.data.db.entity.Data
+import com.android.freelance.moviedemo.data.network.models.Data
 
 
-data class MovieResponse(
+class MovieResponse(
     val data: List<Data> ?= null
 )
