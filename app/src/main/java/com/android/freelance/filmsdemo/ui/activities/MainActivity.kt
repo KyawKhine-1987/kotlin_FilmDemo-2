@@ -72,7 +72,10 @@ class MainActivity : AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 /*movieAdapters.setMovies(lists)*/
-                Thread {
+                // start some dummy thread that is different from UI thread
+                Thread (Runnable{
+
+                    // performing some dummy time taking operation
                     val lists = it.data!!
 
                     val films = ArrayList<Films>()
@@ -85,37 +88,32 @@ class MainActivity : AppCompatActivity() {
                         film.moviePoster = list.mPoster
                         films.add(film)
                     }
+
                     db?.dataDao()?.insert(films)
-                    db?.dataDao()?.fetchAll()
-                    this@MainActivity.runOnUiThread( Runnable {
-                        val filmList = rvMoviesList
-                        val layoutManager = LinearLayoutManager(this)
-                        filmList.layoutManager = layoutManager
-                        filmList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-                        val adapter = FilmsAdapters(films)
-                        filmList.adapter = adapter
-                    })//refreshUIWith(filmDataList!!)
-                }.start()
+                    val filmList = db?.dataDao()?.fetchAll()
+
+                    refreshUIWith(filmList!!)
+                }).start()
             }, {
                 Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
             })
     }
 
-
-}
-
-/*    private fun refreshUIWith(films: List<Films>) {
+    private fun refreshUIWith(films: List<Films>) {
         Log.i(LOG_TAG, "TEST: refreshUIWith() is called...")
 
-        val filmList = rvMoviesList
-        val layoutManager = LinearLayoutManager(this)
-        filmList.layoutManager = layoutManager
-        filmList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        val adapter = FilmsAdapters(films)
-        filmList.adapter = adapter
+        // try to touch View of UI thread
+        this@MainActivity.runOnUiThread( java.lang.Runnable {
+            val filmList = rvMoviesList
+            val layoutManager = LinearLayoutManager(this)
+            filmList.layoutManager = layoutManager
+            filmList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+            val adapter = FilmsAdapters(films)
+            filmList.adapter = adapter
+        })
     }
-
-companion object {
+}
+/*companion object {
   class MoviesTask internal constructor(context: MainActivity) : AsyncTask<List<Data>, Void, Void>() {
 
       private var mAsyncTaskDao: FilmsDao? = null
