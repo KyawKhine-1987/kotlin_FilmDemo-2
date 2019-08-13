@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 
 //const val movie_NumberId = 0
 
-@Entity(tableName = "tbl_movies")
+@Entity(tableName = "tbl_films")
 data class Films(
     @PrimaryKey(autoGenerate = true)
     @NonNull // can never be null

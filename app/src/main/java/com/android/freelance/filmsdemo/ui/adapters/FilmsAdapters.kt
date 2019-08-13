@@ -23,7 +23,7 @@ class FilmsAdapters(val film: List<Films>) : RecyclerView.Adapter<FilmsAdapters.
         Log.i(LOG_TAG, "TEST: onCreateViewHolder() is called...")
 
         val layoutInflater = LayoutInflater.from(parent.context) //Gave me a hard time
-        return MovieViewHolder(layoutInflater.inflate(R.layout.item_movies_list, parent, false))
+        return MovieViewHolder(layoutInflater.inflate(R.layout.item_films_list, parent, false))
     }
 
     override fun getItemCount(): Int {

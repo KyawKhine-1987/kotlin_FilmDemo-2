@@ -29,7 +29,7 @@ abstract class FilmsDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
-                FilmsDatabase::class.java, "Movies.db"
+                FilmsDatabase::class.java, "Films.db"
             ).build()
         /*Room.inMemoryDatabaseBuilder(*/
 

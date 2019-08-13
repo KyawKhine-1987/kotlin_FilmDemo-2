@@ -9,10 +9,10 @@ interface FilmsDao {
     fun insert(films: ArrayList<Films>)
     /*fun insert(data: Data)*/
 
-    @Query("Select * from tbl_movies nolock;")
+    @Query("Select * from tbl_films nolock;")
     fun fetchAll() : List<Films>
 
-    @Query("Delete from tbl_movies;")
+    @Query("Delete from tbl_films;")
     fun deleteAllData()
 
     @Delete
