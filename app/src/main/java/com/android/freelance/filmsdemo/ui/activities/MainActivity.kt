@@ -1,4 +1,4 @@
-package com.android.freelance.moviedemo.ui.activities
+package com.android.freelance.filmdemo.ui.activities
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
@@ -8,12 +8,12 @@ import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.freelance.moviedemo.R
-import com.android.freelance.moviedemo.data.db.FilmsDatabase
-import com.android.freelance.moviedemo.data.db.entity.Films
-import com.android.freelance.moviedemo.data.network.ApiFilms
+import com.android.freelance.filmdemo.R
+import com.android.freelance.filmdemo.data.db.FilmsDatabase
+import com.android.freelance.filmdemo.data.db.entity.Films
+import com.android.freelance.filmdemo.data.network.ApiFilms
 import kotlinx.android.synthetic.main.activity_main.*
-import com.android.freelance.moviedemo.ui.activities.adapter.FilmsAdapters
+import com.android.freelance.filmdemo.ui.activities.adapter.FilmsAdapters
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
@@ -27,16 +27,14 @@ class MainActivity : AppCompatActivity() {
 
     // RecyclerView
     /*private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>*/
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     // Adapter
-    private lateinit var movieAdapters: FilmsAdapters
+    private lateinit var movieAdapters: FilmsAdapters*/
 
     // database
-    internal var db: FilmsDatabase? = null
-    lateinit var film: List<Films>
-
+    var db: FilmsDatabase? = null
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +44,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         initialize()
+        bindingUIAndFetchDataFromNetwork()
+    }
 
+    private fun initialize() {
+        Log.i(LOG_TAG, "TEST: initialize() is called...")
+
+        //createDatabase()
+        db = FilmsDatabase.invoke(applicationContext)
+    }
+
+    @SuppressLint("CheckResult")
+    private fun bindingUIAndFetchDataFromNetwork() {
+        Log.i(LOG_TAG, "TEST: bindingUIAndFetchDataFromNetwork() is called...")
 
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("https://raw.githubusercontent.com")
@@ -77,7 +87,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     db?.dataDao()?.insert(films)
                     db?.dataDao()?.fetchAll()
-                    this@MainActivity.runOnUiThread(Runnable {
+                    this@MainActivity.runOnUiThread( Runnable {
                         val filmList = rvMoviesList
                         val layoutManager = LinearLayoutManager(this)
                         filmList.layoutManager = layoutManager
@@ -92,12 +102,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun initialize() {
-        Log.i(LOG_TAG, "TEST: initialize() is called...")
-
-        //createDatabase()
-        db = FilmsDatabase.invoke(applicationContext)
-    }
 }
 
 /*    private fun refreshUIWith(films: List<Films>) {

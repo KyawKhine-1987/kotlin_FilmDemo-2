@@ -1,4 +1,4 @@
-package com.android.freelance.moviedemo
+package com.android.freelance.filmdemo
 
 import org.junit.Test
 

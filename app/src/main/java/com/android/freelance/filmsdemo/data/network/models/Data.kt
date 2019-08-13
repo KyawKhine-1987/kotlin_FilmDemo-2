@@ -1,4 +1,4 @@
-package com.android.freelance.moviedemo.data.network.models
+package com.android.freelance.filmdemo.data.network.models
 
 import com.google.gson.annotations.SerializedName
 

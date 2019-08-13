@@ -1,4 +1,4 @@
-package com.android.freelance.moviedemo.ui.activities.adapter
+package com.android.freelance.filmdemo.ui.activities.adapter
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -9,8 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 /*import android.support.v7.widget.RecyclerView*/
 import androidx.recyclerview.widget.RecyclerView
-import com.android.freelance.moviedemo.R
-import com.android.freelance.moviedemo.data.db.entity.Films
+import com.android.freelance.filmdemo.R
+import com.android.freelance.filmdemo.data.db.entity.Films
 import com.squareup.picasso.Picasso
 
 

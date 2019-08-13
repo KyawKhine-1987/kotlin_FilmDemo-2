@@ -1,6 +1,6 @@
-package com.android.freelance.moviedemo.data.network
+package com.android.freelance.filmdemo.data.network
 
-import com.android.freelance.moviedemo.data.network.response.FilmsResponse
+import com.android.freelance.filmdemo.data.network.response.FilmsResponse
 import io.reactivex.Observable
 import retrofit2.http.GET
 

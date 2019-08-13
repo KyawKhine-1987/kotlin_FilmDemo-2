@@ -1,6 +1,6 @@
-package com.android.freelance.moviedemo.data.network.response
+package com.android.freelance.filmdemo.data.network.response
 
-import com.android.freelance.moviedemo.data.network.models.Data
+import com.android.freelance.filmdemo.data.network.models.Data
 
 
 class FilmsResponse(

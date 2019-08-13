@@ -1,4 +1,4 @@
-package com.android.freelance.moviedemo.data.db.entity
+package com.android.freelance.filmdemo.data.db.entity
 
 import androidx.room.*
 

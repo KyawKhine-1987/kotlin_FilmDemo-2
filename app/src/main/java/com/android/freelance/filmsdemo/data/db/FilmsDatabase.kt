@@ -1,11 +1,11 @@
-package com.android.freelance.moviedemo.data.db
+package com.android.freelance.filmdemo.data.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.android.freelance.moviedemo.data.db.entity.Films
-import com.android.freelance.moviedemo.data.db.entity.FilmsDao
+import com.android.freelance.filmdemo.data.db.entity.Films
+import com.android.freelance.filmdemo.data.db.entity.FilmsDao
 
 @Database(
     /*entities = arrayOf(Data::class),*/
