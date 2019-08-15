@@ -1,10 +1,18 @@
 package com.android.freelance.filmdemo.ui.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,8 +22,13 @@ import com.android.freelance.filmdemo.data.db.entity.Films
 import com.android.freelance.filmdemo.data.network.ApiFilms
 import kotlinx.android.synthetic.main.activity_main.*
 import com.android.freelance.filmdemo.ui.activities.adapter.FilmsAdapters
+import com.android.freelance.filmsdemo.ui.viewmodel.FilmsViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -25,33 +38,42 @@ class MainActivity : AppCompatActivity() {
 
     private val LOG_TAG = MainActivity::class.java.name
 
-    // RecyclerView
-    /*private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    private lateinit var viewManager: RecyclerView.LayoutManager
+    // ViewModel
+    private lateinit var filmsViewModel: FilmsViewModel
 
-    // Adapter
-    private lateinit var movieAdapters: FilmsAdapters*/
+    var hasInternet = false
 
-    // database
-    var db: FilmsDatabase? = null
-
-    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(LOG_TAG, "TEST: onCreate() is called...")
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initialize()
+        filmsViewModel = ViewModelProviders.of(this).get(FilmsViewModel::class.java)
+
+        /*// ProgressBar
+        val progressBar: ProgressBar = findViewById(R.id.pbLoadingIndicator)
+
+        // TextView
+        val textview_nic: TextView = findViewById(R.id.tvNIC)
+
+        filmsViewModel.refresh()
+
+        filmsViewModel.spinner.observe(this, Observer { value ->
+            value?.let { show ->
+                progressBar.visibility = if (show) View.VISIBLE else View.GONE
+            }
+        })
+
+        filmsViewModel.textview_NIC.observe(this, Observer { value ->
+            value?.let {
+                textview_nic.text = it
+            }
+        })*/
+
         bindingUIAndFetchDataFromNetwork()
-    }
 
-    private fun initialize() {
-        Log.i(LOG_TAG, "TEST: initialize() is called...")
-
-        //createDatabase()
-        db = FilmsDatabase.invoke(applicationContext)
+        offlineData()
     }
 
     @SuppressLint("CheckResult")
@@ -71,31 +93,39 @@ class MainActivity : AppCompatActivity() {
             .unsubscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                /*movieAdapters.setMovies(lists)*/
-                // start some dummy thread that is different from UI thread
-                Thread (Runnable{
+                if (isNetworkAvailable()) {
+                    hasInternet = true
+                    /*movieAdapters.setMovies(lists)*/
 
-                    // performing some dummy time taking operation
-                    val lists = it.data!!
+                    // start some dummy thread that is different from UI thread
+                    Thread(Runnable {
 
-                    val films = ArrayList<Films>()
-                    for (list in lists) {
-                        val film = Films()
-                        film.movieId = list.mId
-                        film.movieTitle = list.mTitle
-                        film.movieYear = list.mYear
-                        film.movieGenre = list.mGenre
-                        film.moviePoster = list.mPoster
-                        films.add(film)
-                    }
+                        // performing some dummy time taking operation
+                        val lists = it.data!!
 
-                    db?.dataDao()?.insert(films)
-                    val filmList = db?.dataDao()?.fetchAll()
+                        val films = ArrayList<Films>()
+                        for (list in lists) {
+                            val film = Films()
+                            film.movieId = list.mId
+                            film.movieTitle = list.mTitle
+                            film.movieYear = list.mYear
+                            film.movieGenre = list.mGenre
+                            film.moviePoster = list.mPoster
+                            films.add(film)
+                        }
 
-                    refreshUIWith(filmList!!)
-                }).start()
+                        filmsViewModel.insert(films)
+                    }).start()
+                }
             }, {
-                Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
+                /* Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()*/
+                if (!hasInternet) {
+                    Toast.makeText(
+                        applicationContext,
+                        "No Internet Connection!\nSo, it doesn't take the data from https://raw.githubusercontent.com.\nAlso " + it.message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             })
     }
 
@@ -103,7 +133,7 @@ class MainActivity : AppCompatActivity() {
         Log.i(LOG_TAG, "TEST: refreshUIWith() is called...")
 
         // try to touch View of UI thread
-        this@MainActivity.runOnUiThread( java.lang.Runnable {
+        this@MainActivity.runOnUiThread(Runnable {
             val filmList = rvMoviesList
             val layoutManager = LinearLayoutManager(this)
             filmList.layoutManager = layoutManager
@@ -112,8 +142,35 @@ class MainActivity : AppCompatActivity() {
             filmList.adapter = adapter
         })
     }
+
+    private fun offlineData() {
+        Log.i(LOG_TAG, "TEST: offlineData() is called...")
+
+        filmsViewModel.fetchAllFilms.observe(this@MainActivity, Observer { films ->
+            films?.let { refreshUIWith(films) }
+        })
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        Log.i(LOG_TAG, "TEST: isNetworkAvailable() is called...")
+
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    }
 }
-/*companion object {
+
+/*
+    // RecyclerView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewManager: RecyclerView.LayoutManager
+
+    // Adapter
+    private lateinit var movieAdapters: FilmsAdapters
+
+companion object {
   class MoviesTask internal constructor(context: MainActivity) : AsyncTask<List<Data>, Void, Void>() {
 
       private var mAsyncTaskDao: FilmsDao? = null

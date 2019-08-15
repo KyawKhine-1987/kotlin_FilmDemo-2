@@ -5,6 +5,11 @@ buildscript {
     ext.retrofit_version = '2.6.1'
     ext.converterforGsonandRxJava2_version = '2.3.0'
     ext.room_version = '2.2.0-alpha02'
+    ext.lifecycle_version= '2.2.0-alpha03'
+    ext.picasso_version = '2.71828'
+    ext.recyclerview_version = '1.0.0'
+    ext.rxjava2_rxandroid_version = '2.0.2'
+    ext.rxjava2_rxjava_version = '2.1.17'
 
     repositories {
         google()

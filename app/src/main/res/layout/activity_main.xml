@@ -13,13 +13,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/swipeRefreshLayout">         <!--solved this error "infer or missing constraints."-->
+            android:id="@+id/swipeRefreshLayout" app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0">         <!--solved this error "infer or missing constraints."-->
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMoviesList"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/><!--Grid or Relative-->
+
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <!--<ProgressBar
+            android:id="@+id/pbLoadingIndicator"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+            android:id="@+id/tvNIC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/NIC"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

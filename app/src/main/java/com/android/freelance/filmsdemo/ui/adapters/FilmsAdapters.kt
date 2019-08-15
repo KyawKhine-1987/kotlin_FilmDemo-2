@@ -14,10 +14,10 @@ import com.android.freelance.filmdemo.data.db.entity.Films
 import com.squareup.picasso.Picasso
 
 
-class FilmsAdapters(val film: List<Films>) : RecyclerView.Adapter<FilmsAdapters.MovieViewHolder>() {
+class FilmsAdapters(private val film: List<Films>) : RecyclerView.Adapter<FilmsAdapters.MovieViewHolder>() {
 
     private val LOG_TAG = FilmsAdapters::class.java.name
-    /*private val moviesDataList: MutableList<Data> = mutableListOf()*/
+    /*private val filmsDataList: MutableList<Films> = mutableListOf()*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         Log.i(LOG_TAG, "TEST: onCreateViewHolder() is called...")
@@ -26,26 +26,30 @@ class FilmsAdapters(val film: List<Films>) : RecyclerView.Adapter<FilmsAdapters.
         return MovieViewHolder(layoutInflater.inflate(R.layout.item_films_list, parent, false))
     }
 
-    override fun getItemCount(): Int {
+    /*override fun getItemCount(): Int {
         Log.i(LOG_TAG, "TEST: getItemCount() is called...")
 
-        /*return moviesDataList.size*/
+        /*return filmsDataList.size*/
         return film.size
     }
+
+    override fun getItemCount() =  filmsDataList.size*/
+
+    override fun getItemCount() = film.size
 
     override fun onBindViewHolder(holder: MovieViewHolder, i: Int) {
         Log.i(LOG_TAG, "TEST: onBindViewHolder() is called...")
 
-        /*holder.bindModel(moviesDataList[i])*/
+        /*holder.bindModel(filmsDataList[i])*/
         holder.bindModel(film[i])
     }
 
-    /* fun setMovies(dataList: List<Data>) {
-         Log.i(LOG_TAG, "TEST: setMovies() is called...")
+/* fun setMovies(dataList: List<Data>) {
+     Log.i(LOG_TAG, "TEST: setMovies() is called...")
 
-         moviesDataList.addAll(dataList)
-         notifyDataSetChanged()
-     }*/
+     moviesDataList.addAll(dataList)
+     notifyDataSetChanged()
+ }*/
 
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
