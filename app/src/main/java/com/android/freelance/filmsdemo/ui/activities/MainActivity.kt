@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     // ViewModel
     private lateinit var filmsViewModel: FilmsViewModel
 
+    var progressBar: ProgressBar? = null
     var hasInternet = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,10 +53,14 @@ class MainActivity : AppCompatActivity() {
 
         filmsViewModel = ViewModelProviders.of(this).get(FilmsViewModel::class.java)
 
-        /*// ProgressBar
-        val progressBar: ProgressBar = findViewById(R.id.pbLoadingIndicator)
+        // ProgressBar
+        progressBar = findViewById(R.id.pbLoadingIndicator)
 
-        // TextView
+        // display the indefinite progressbar
+        this@MainActivity.runOnUiThread(java.lang.Runnable {
+            progressBar?.visibility = View.VISIBLE
+        })
+        /*// TextView
         val textview_nic: TextView = findViewById(R.id.tvNIC)
 
         filmsViewModel.refresh()
@@ -115,10 +121,11 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         filmsViewModel.insert(films)
+
+                        progressBarLoading()
                     }).start()
                 }
             }, {
-                /* Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()*/
                 if (!hasInternet) {
                     Toast.makeText(
                         applicationContext,
@@ -126,6 +133,8 @@ class MainActivity : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
                 }
+
+                progressBarLoading()
             })
     }
 
@@ -133,7 +142,7 @@ class MainActivity : AppCompatActivity() {
         Log.i(LOG_TAG, "TEST: refreshUIWith() is called...")
 
         // try to touch View of UI thread
-        this@MainActivity.runOnUiThread(Runnable {
+        this@MainActivity.runOnUiThread(java.lang.Runnable {
             val filmList = rvMoviesList
             val layoutManager = LinearLayoutManager(this)
             filmList.layoutManager = layoutManager
@@ -158,6 +167,15 @@ class MainActivity : AppCompatActivity() {
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
 
         return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    }
+
+    private fun progressBarLoading() {
+        Log.i(LOG_TAG, "TEST: progressBarLoading() is called...")
+
+        // when the task is completed, make progressBar gone
+        this@MainActivity.runOnUiThread(java.lang.Runnable {
+            progressBar?.visibility = View.GONE
+        })
     }
 }
 
