@@ -3,6 +3,7 @@ package com.android.freelance.filmdemo.data.db.entity
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 //const val movie_NumberId = 0
@@ -11,6 +12,7 @@ const val builtIn_Id = 0
 data class Films(
 
     @ColumnInfo(name = "Movie_Id")
+    //@Ignore
     var movieId: Int= 0,
 
     @ColumnInfo(name = "Movie_Title")

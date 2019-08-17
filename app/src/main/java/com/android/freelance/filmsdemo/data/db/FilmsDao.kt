@@ -7,14 +7,17 @@ import androidx.room.*
 interface FilmsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(films: ArrayList<Films>)
+    suspend fun insert(films: ArrayList<Films>)
 
-    @Query("Select * from tbl_films nolock order by Movie_Id;")
-    fun fetchAll() : LiveData<List<Films>>
+    @Query("select * from tbl_films nolock order by Movie_Id;")
+    fun fetchAll(): LiveData<List<Films>>
 
-    @Query("Delete from tbl_films;")
-    fun deleteAllData()
+    suspend @Query("delete from tbl_films;")
+    fun deleteData()
 
-    /*@Delete
+    /*@Query("select * from tbl_films nolock where Movie_Id in(select Movie_Id from tbl_films nolock where Movie_Id = :movieId);")
+    fun ifExistsData(movieId: Int): List<Films>
+
+    @Delete
     fun delete(films: Films)*/
 }

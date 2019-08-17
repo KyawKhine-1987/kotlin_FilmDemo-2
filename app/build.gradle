@@ -53,6 +53,7 @@ dependencies {
     // Room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-coroutines:2.1.0-alpha04"//Add some suspense to room db
 
     // ViewModel LifeCycle
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"

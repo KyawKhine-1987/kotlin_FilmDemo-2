@@ -14,7 +14,7 @@ class FilmsRepository(application: Application) {
 
     private val LOG_TAG = FilmsRepository::class.java.name
 
-    private var filmsDao: FilmsDao ?= null
+    private var filmsDao: FilmsDao? = null
 
     init {
         //createDatabase()
@@ -31,19 +31,9 @@ class FilmsRepository(application: Application) {
 
     val fetchAllFilms: LiveData<List<Films>> = filmsDao!!.fetchAll()
 
-    /*suspend fun refresh() {
-        withContext(Dispatchers.IO) {
-            try {
-               *//* val result = network.fetchNewWelcome().await()
-                titleDao.insertTitle(Title(result))*//*
-                filmsDao!!.fetchAll()
-            } catch (error: NetworkException) {
-                throw RefreshError(error)
-            }
-        }
-    }*/
+    suspend fun deleteAllData() {
+        filmsDao!!.deleteData()
+    }
+
+    /*val checkData: List<Films> = filmsDao!!.ifExistsData()*/
 }
-
-/*class RefreshError(cause: Throwable) : Throwable(cause.message, cause)
-
-class NetworkException(message: String) : Throwable(message)*/

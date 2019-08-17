@@ -27,14 +27,12 @@ class FilmsViewModel(
     private val scope = CoroutineScope(coroutineContext)
 
     private var filmsRepository: FilmsRepository? = null
-   /* private val _spinner = MutableLiveData<Boolean>()
-    private val _textviewNIC = MutableLiveData<String>()*/
 
     init {
         filmsRepository = FilmsRepository(application)
     }
 
-    fun cancelParentJob() = parentJob.cancel()
+    private fun cancelParentJob() = parentJob.cancel()
 
     override fun onCleared() {
         Log.i(LOG_TAG, "TEST: onCleared() is called...")
@@ -42,12 +40,6 @@ class FilmsViewModel(
         super.onCleared()
         cancelParentJob()
     }
-
-    /*val spinner: LiveData<Boolean>
-        get() = _spinner
-
-    val textview_NIC: LiveData<String>
-        get() = _textviewNIC*/
 
     fun insert(films: ArrayList<Films>) = scope.launch(Dispatchers.IO) {
         Log.i(LOG_TAG, "TEST: insert() is called...")
@@ -57,22 +49,11 @@ class FilmsViewModel(
 
     val fetchAllFilms: LiveData<List<Films>> = filmsRepository!!.fetchAllFilms
 
-    /*fun refresh() {
-        launchDataLoad {
-            filmsRepository?.refresh()
-        }
+    fun deleteAllData() = scope.launch(Dispatchers.IO){
+        Log.i(LOG_TAG, "TEST: insert() is called...")
+
+        filmsRepository!!.deleteAllData()
     }
 
-    private fun launchDataLoad(block: suspend () -> Unit): Job {
-        return viewModelScope.launch {
-            try {
-                _spinner.value = true
-                block()
-            } catch (error: RefreshError) {
-                _textviewNIC.value = error.message
-            } finally {
-                _spinner.value = false
-            }
-        }
-    }*/
+    /*val checkData: List<Films> = filmsRepository!!.checkData*/
 }

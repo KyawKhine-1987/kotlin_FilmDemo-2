@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        filmsViewModel = ViewModelProviders.of(this).get(FilmsViewModel::class.java)
+        filmsViewModel = ViewModelProviders.of(this@MainActivity).get(FilmsViewModel::class.java)
 
         // ProgressBar
         progressBar = findViewById(R.id.pbLoadingIndicator)
@@ -60,22 +60,6 @@ class MainActivity : AppCompatActivity() {
         this@MainActivity.runOnUiThread(java.lang.Runnable {
             progressBar?.visibility = View.VISIBLE
         })
-        /*// TextView
-        val textview_nic: TextView = findViewById(R.id.tvNIC)
-
-        filmsViewModel.refresh()
-
-        filmsViewModel.spinner.observe(this, Observer { value ->
-            value?.let { show ->
-                progressBar.visibility = if (show) View.VISIBLE else View.GONE
-            }
-        })
-
-        filmsViewModel.textview_NIC.observe(this, Observer { value ->
-            value?.let {
-                textview_nic.text = it
-            }
-        })*/
 
         bindingUIAndFetchDataFromNetwork()
 
@@ -120,6 +104,7 @@ class MainActivity : AppCompatActivity() {
                             films.add(film)
                         }
 
+                        filmsViewModel.deleteAllData()
                         filmsViewModel.insert(films)
 
                         progressBarLoading()
@@ -129,13 +114,21 @@ class MainActivity : AppCompatActivity() {
                 if (!hasInternet) {
                     Toast.makeText(
                         applicationContext,
-                        "No Internet Connection!\nSo, it doesn't take the data from https://raw.githubusercontent.com.\nAlso " + it.message,
+                        "No Internet Connection!\nThis is offline data which is taken to show you from the local storage.\nAlso " + it.message,
                         Toast.LENGTH_LONG
                     ).show()
                 }
 
                 progressBarLoading()
             })
+    }
+
+    private fun offlineData() {
+        Log.i(LOG_TAG, "TEST: offlineData() is called...")
+
+        filmsViewModel.fetchAllFilms.observe(this@MainActivity, Observer { films ->
+            films?.let { refreshUIWith(films) }
+        })
     }
 
     private fun refreshUIWith(films: List<Films>) {
@@ -149,14 +142,6 @@ class MainActivity : AppCompatActivity() {
             filmList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
             val adapter = FilmsAdapters(films)
             filmList.adapter = adapter
-        })
-    }
-
-    private fun offlineData() {
-        Log.i(LOG_TAG, "TEST: offlineData() is called...")
-
-        filmsViewModel.fetchAllFilms.observe(this@MainActivity, Observer { films ->
-            films?.let { refreshUIWith(films) }
         })
     }
 
