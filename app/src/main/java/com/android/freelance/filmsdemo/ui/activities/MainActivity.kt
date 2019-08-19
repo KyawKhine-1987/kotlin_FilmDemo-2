@@ -70,6 +70,8 @@ class MainActivity : AppCompatActivity() {
     private fun bindingUIAndFetchDataFromNetwork() {
         Log.i(LOG_TAG, "TEST: bindingUIAndFetchDataFromNetwork() is called...")
 
+        filmsViewModel.deleteAllData()
+
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("https://raw.githubusercontent.com")
             .addConverterFactory(GsonConverterFactory.create())
@@ -104,7 +106,6 @@ class MainActivity : AppCompatActivity() {
                             films.add(film)
                         }
 
-                        filmsViewModel.deleteAllData()
                         filmsViewModel.insert(films)
 
                         progressBarLoading()

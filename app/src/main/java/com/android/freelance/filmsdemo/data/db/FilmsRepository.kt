@@ -22,8 +22,9 @@ class FilmsRepository(application: Application) {
         filmsDao = db.filmsDao()
     }
 
+    //suspend
     @WorkerThread
-    suspend fun insert(films: ArrayList<Films>) {
+    fun insert(films: ArrayList<Films>) {
         Log.i(LOG_TAG, "TEST: insert() is called...")
 
         filmsDao!!.insert(films)
@@ -31,7 +32,8 @@ class FilmsRepository(application: Application) {
 
     val fetchAllFilms: LiveData<List<Films>> = filmsDao!!.fetchAll()
 
-    suspend fun deleteAllData() {
+    //suspend
+    fun deleteAllData() {
         filmsDao!!.deleteData()
     }
 
