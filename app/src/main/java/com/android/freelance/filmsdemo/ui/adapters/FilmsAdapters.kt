@@ -14,16 +14,16 @@ import com.android.freelance.filmdemo.data.db.entity.Films
 import com.squareup.picasso.Picasso
 
 
-class FilmsAdapters(private val film: List<Films>) : RecyclerView.Adapter<FilmsAdapters.MovieViewHolder>() {
+class FilmsAdapters(private val films: List<Films>) : RecyclerView.Adapter<FilmsAdapters.FilmsViewHolder>() {
 
     private val LOG_TAG = FilmsAdapters::class.java.name
     /*private val filmsDataList: MutableList<Films> = mutableListOf()*/
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmsViewHolder {
         Log.i(LOG_TAG, "TEST: onCreateViewHolder() is called...")
 
         val layoutInflater = LayoutInflater.from(parent.context) //Gave me a hard time
-        return MovieViewHolder(layoutInflater.inflate(R.layout.item_films_list, parent, false))
+        return FilmsViewHolder(layoutInflater.inflate(R.layout.item_films_list, parent, false))
     }
 
     /*override fun getItemCount(): Int {
@@ -35,44 +35,44 @@ class FilmsAdapters(private val film: List<Films>) : RecyclerView.Adapter<FilmsA
 
     override fun getItemCount() =  filmsDataList.size*/
 
-    override fun getItemCount() = film.size
+    override fun getItemCount() = films.size
 
-    override fun onBindViewHolder(holder: MovieViewHolder, i: Int) {
+    override fun onBindViewHolder(holder: FilmsViewHolder, i: Int) {
         Log.i(LOG_TAG, "TEST: onBindViewHolder() is called...")
 
         /*holder.bindModel(filmsDataList[i])*/
-        holder.bindModel(film[i])
+        holder.bindModel(films[i])
     }
 
-/* fun setMovies(dataList: List<Data>) {
-     Log.i(LOG_TAG, "TEST: setMovies() is called...")
+/* fun setFilms(dataList: List<Data>) {
+     Log.i(LOG_TAG, "TEST: setFilms() is called...")
 
-     moviesDataList.addAll(dataList)
+     filmsDataList.addAll(dataList)
      notifyDataSetChanged()
  }*/
 
-    class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class FilmsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val LOG_TAG = MovieViewHolder::class.java.name
+        private val LOG_TAG = FilmsViewHolder::class.java.name
 
-        private val poster: ImageView = itemView.findViewById(R.id.ivMoviePoster)
-        private val title: TextView = itemView.findViewById(R.id.tvMovieTitle)
-        private val genre: TextView = itemView.findViewById(R.id.tvMovieGenre)
-        private val year: TextView = itemView.findViewById(R.id.tvMovieYear)
+        private val poster: ImageView = itemView.findViewById(R.id.ivFilmPoster)
+        private val title: TextView = itemView.findViewById(R.id.tvFilmTitle)
+        private val genre: TextView = itemView.findViewById(R.id.tvFilmGenre)
+        private val year: TextView = itemView.findViewById(R.id.tvFilmYear)
 
         @SuppressLint("SetTextI18n")
-                /* fun bindModel(movie: Data) {*/
+                /* fun bindModel(film: Data) {*/
         fun bindModel(film: Films) {
             Log.i(LOG_TAG, "TEST: bindModel() is called...")
 
-            /*Picasso.get().load(movie.mPoster).into(poster)
-            title.text = "Movie Name : " + movie.mTitle
-            genre.text = "Movie Genre : " + movie.mGenre
-            year.text = "Released Year : " + movie.mYear.toString()*/
-            Picasso.get().load(film.moviePoster).into(poster)
-            title.text = "Movie Name : " + film.movieTitle
-            genre.text = "Movie Genre : " + film.movieGenre
-            year.text = "Released Year : " + film.movieYear
+            /*Picasso.get().load(film.mPoster).into(poster)
+            title.text = "film Name : " + film.mTitle
+            genre.text = "film Genre : " + film.mGenre
+            year.text = "Released Year : " + film.mYear.toString()*/
+            Picasso.get().load(film.filmPoster).into(poster)
+            title.text = "Film Name : " + film.filmTitle
+            genre.text = "Film Genre : " + film.filmGenre
+            year.text = "Released Year : " + film.filmYear
         }
     }
 }

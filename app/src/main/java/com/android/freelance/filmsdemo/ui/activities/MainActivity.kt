@@ -56,10 +56,8 @@ class MainActivity : AppCompatActivity() {
         // ProgressBar
         progressBar = findViewById(R.id.pbLoadingIndicator)
 
-        // display the indefinite progressbar
-        this@MainActivity.runOnUiThread(java.lang.Runnable {
-            progressBar?.visibility = View.VISIBLE
-        })
+        // display the progressbar
+        progressBarLoading()
 
         bindingUIAndFetchDataFromNetwork()
 
@@ -69,8 +67,6 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("CheckResult")
     private fun bindingUIAndFetchDataFromNetwork() {
         Log.i(LOG_TAG, "TEST: bindingUIAndFetchDataFromNetwork() is called...")
-
-        filmsViewModel.deleteAllData()
 
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("https://raw.githubusercontent.com")
@@ -87,7 +83,7 @@ class MainActivity : AppCompatActivity() {
             .subscribe({
                 if (isNetworkAvailable()) {
                     hasInternet = true
-                    /*movieAdapters.setMovies(lists)*/
+                    /*movieAdapters.setFilms(lists)*/
 
                     // start some dummy thread that is different from UI thread
                     Thread(Runnable {
@@ -98,17 +94,18 @@ class MainActivity : AppCompatActivity() {
                         val films = ArrayList<Films>()
                         for (list in lists) {
                             val film = Films()
-                            film.movieId = list.mId
-                            film.movieTitle = list.mTitle
-                            film.movieYear = list.mYear
-                            film.movieGenre = list.mGenre
-                            film.moviePoster = list.mPoster
+                            film.filmId = list.mId
+                            film.filmTitle = list.mTitle
+                            film.filmYear = list.mYear
+                            film.filmGenre = list.mGenre
+                            film.filmPoster = list.mPoster
                             films.add(film)
                         }
 
+                        filmsViewModel.deleteAllData()
                         filmsViewModel.insert(films)
 
-                        progressBarLoading()
+                        progressBarGone()
                     }).start()
                 }
             }, {
@@ -120,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                     ).show()
                 }
 
-                progressBarLoading()
+                progressBarGone()
             })
     }
 
@@ -137,12 +134,13 @@ class MainActivity : AppCompatActivity() {
 
         // try to touch View of UI thread
         this@MainActivity.runOnUiThread(java.lang.Runnable {
-            val filmList = rvMoviesList
+            val filmsList = rvMoviesList
             val layoutManager = LinearLayoutManager(this)
-            filmList.layoutManager = layoutManager
-            filmList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+            filmsList.layoutManager = layoutManager
+            filmsList.hasFixedSize()
+            filmsList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
             val adapter = FilmsAdapters(films)
-            filmList.adapter = adapter
+            filmsList.adapter = adapter
         })
     }
 
@@ -158,7 +156,16 @@ class MainActivity : AppCompatActivity() {
     private fun progressBarLoading() {
         Log.i(LOG_TAG, "TEST: progressBarLoading() is called...")
 
-        // when the task is completed, make progressBar gone
+        // when the task is started, make progressBar is loading
+        this@MainActivity.runOnUiThread(java.lang.Runnable {
+            progressBar?.visibility = View.VISIBLE
+        })
+    }
+
+    private fun progressBarGone() {
+        Log.i(LOG_TAG, "TEST: progressBarLoading() is called...")
+
+        // when the task was completed, make progressBar gone
         this@MainActivity.runOnUiThread(java.lang.Runnable {
             progressBar?.visibility = View.GONE
         })

@@ -9,7 +9,7 @@ interface FilmsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(films: ArrayList<Films>)//suspend
 
-    @Query("select * from tbl_films nolock order by Movie_Id;")
+    @Query("select * from tbl_films nolock order by Film_Id;")
     fun fetchAll(): LiveData<List<Films>>
 
     @Query("delete from tbl_films;")

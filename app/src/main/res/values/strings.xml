@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Film_Demo</string>
-    <string name="photo">TEST</string>
-    <string name="movieTitle">Title</string>
-    <string name="movieGenre">Genre</string>
-    <string name="movieYear">Year</string>
+    <string name="photo">films</string>
+    <string name="filmTitle">Title</string>
+    <string name="filmGenre">Genre</string>
+    <string name="filmYear">Year</string>
     <string name="NIC">No Internet Connection!</string>
 </resources>

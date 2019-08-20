@@ -11,25 +11,25 @@ const val builtIn_Id = 0
 @Entity(tableName = "tbl_films")
 data class Films(
 
-    @ColumnInfo(name = "Movie_Id")
+    @ColumnInfo(name = "Film_Id")
     //@Ignore
-    var movieId: Int= 0,
+    var filmId: Int= 0,
 
-    @ColumnInfo(name = "Movie_Title")
-    var movieTitle: String? = null,
+    @ColumnInfo(name = "Film_Title")
+    var filmTitle: String? = null,
 
-    @ColumnInfo(name = "Movie_Year")
-    var movieYear: Int= 0,
+    @ColumnInfo(name = "Film_Year")
+    var filmYear: Int= 0,
 
-    @ColumnInfo(name = "Movie_Genre")
-    var movieGenre: String? = null,
+    @ColumnInfo(name = "Film_Genre")
+    var filmGenre: String? = null,
 
-    @ColumnInfo(name = "Movie_Poster")
-    var moviePoster: String? = null
+    @ColumnInfo(name = "Film_Poster")
+    var filmPoster: String? = null
 ){
     //It "primary key" can't input that Room DB bcoz it's json data has duplicated id="8666".
     @PrimaryKey(autoGenerate = true)
-    var Id: Int = builtIn_Id
+    var id: Int = builtIn_Id
 }
 // "?= and @NonNull" is meant can never be null
 // "!! and @Nullable" is meant can be null.

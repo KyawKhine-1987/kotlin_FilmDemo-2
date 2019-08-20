@@ -50,7 +50,7 @@ class FilmsViewModel(
     val fetchAllFilms: LiveData<List<Films>> = filmsRepository!!.fetchAllFilms
 
     fun deleteAllData() = scope.launch(Dispatchers.IO){
-        Log.i(LOG_TAG, "TEST: insert() is called...")
+        Log.i(LOG_TAG, "TEST: deleteAllData() is called...")
 
         filmsRepository!!.deleteAllData()
     }
